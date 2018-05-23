@@ -35,14 +35,14 @@ This tutorial will describe application hosting on AWS lightsail Ubuntu instance
 - Update and configure Amazon AWS 
      - Connect to your AWS instance via browser in AWS instance **CONNECT** menu (Connect using SSH).
      - type and execute in terminal: 
-         - Update the update list: `$ sudo apt-get update` _Fetches the list of available updates_
-         - Upgrade packages: `$ sudo apt-get upgrade` _Strictly upgrades the current packages_
-         - Upgrade distribution `$ sudo apt-get dist-upgrade` _Installs updates (new ones)_
-         - Remove no longer required packages: `$ sudo apt-get autoremove`
-         - Reboot the instance with: `$ sudo reboot`
-         - Reconnect via Connect using SSH from AWS instance menu.
-    - Create new user **`grader`**
-        - `$ sudo adduser grader` When prompted enter Full name and Unix password.
+     - Update the update list: `$ sudo apt-get update` _Fetches the list of available updates_
+     - Upgrade packages: `$ sudo apt-get upgrade` _Strictly upgrades the current packages_
+     - Upgrade distribution `$ sudo apt-get dist-upgrade` _Installs updates (new ones)_
+     - Remove no longer required packages: `$ sudo apt-get autoremove`
+     - Reboot the instance with: `$ sudo reboot`
+     - Reconnect via Connect using SSH from AWS instance menu.
+- Create new user **`grader`**
+     - `$ sudo adduser grader` When prompted enter Full name and Unix password.
              ``` 
             ubuntu@ip-172-26-10-33:~$ sudo adduser grader
             Adding user `grader' ...
@@ -63,11 +63,11 @@ This tutorial will describe application hosting on AWS lightsail Ubuntu instance
             Is the information correct? [Y/n] y
             ubuntu@ip-172-26-10-33:~$ 
             ```
-        - Use the usermod command to add the user **`grader`** to the sudo group. [How to create a sudo user on ubuntu docs](https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart)
+     - Use the usermod command to add the user **`grader`** to the sudo group. [How to create a sudo user on ubuntu docs](https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart)
             - `$ sudo usermod -aG sudo grader`
         - Enter **`grader`** account: `$ su grader` and confirm with grader password
-        
-    - Configure sshd_conf file on your AWS instance:
+
+- Configure sshd_conf file on your AWS instance:
         - Add the following entry to sshd_config to disable root to login to the server directly:
         `$ vi /etc/ssh/sshd_config` 
         Edit line `PermitRootLogin prohibit-password` to `PermitRootLogin no`
@@ -75,7 +75,7 @@ This tutorial will describe application hosting on AWS lightsail Ubuntu instance
         Restart ssh service `$ sudo service ssh restart`
         You can try to connect to AWS instance via terminal on you linux PC.
         `$ ssh grader@18.184.238.72` 
-    - Configure firewall on your AWS instance. [How to set up a Firewall with UFW on ubunut](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04):
+- Configure firewall on your AWS instance. [How to set up a Firewall with UFW on ubunut](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04):
         - To set the defaults used by UFW:
         `$ sudo ufw default deny incoming`
         `$ sudo ufw default allow outgoing`
@@ -88,35 +88,35 @@ This tutorial will describe application hosting on AWS lightsail Ubuntu instance
         - Enable Firewall:
         `$ sudo ufw enable` _Enabling UFW_
         `$ sudo ufw status verbose` _Check Status_
-    - Set Up SSH Keys: [How To Set Up SSH Keys on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604)
+- Set Up SSH Keys: [How To Set Up SSH Keys on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604)
         - Create the RSA Key Pair (usually your computer): 
         `$ ssh-keygen`
         `$ ssh-copy-id grader@18.184.238.72`
         Try logging into the AWS instance:
         `$ ssh grader@18.184.238.72`
         If all set correctly and were able to login, we can change the line `PasswordAuthentication yes` in `/etc/ssh/sshd_config` to `PasswordAuthentication no`
-    - Set Timezone and Install NTP
+- Set Timezone and Install NTP
         - `$ sudo timedatectl set-timezone UTC` _Set Timezone to UTC_
         - `$ sudo apt-get install ntp` _Install NTP_
         - `$ sudo reboot` _Reboot instance_
 
-- Install packages for application hosting:
-    - Install [APACHE2](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-16-04) packages:
+### Install packages for application hosting:
+- Install [APACHE2](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-16-04) packages:
         - `$ sudo apt-get update`
         - `$ sudo apt-get install apache2` _Install Apache 2_
         - `$ sudo systemctl status apache2` _Check if web server is running_
         - Enter your ip addres or domain name into browser address bar (we should see default Ubuntu Apache 2 web page): `http://server_domain_or_IP`
-    - Install mod wsgi to run wsgi files
-        - `$ sudo apt-get install libapache2-mod-wsgi`
-    - [Install PostgreSQL](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04):
-        - `$ sudo apt-get update`
-        - `$ sudo apt-get install postgresql postgresql-contrib`
-    - Install sqlite3 (used by the catalog app)
+- Install mod wsgi to run wsgi files
+       - `$ sudo apt-get install libapache2-mod-wsgi`
+- [Install PostgreSQL](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04):
+       - `$ sudo apt-get update`
+       - `$ sudo apt-get install postgresql postgresql-contrib`
+- Install sqlite3 (used by the catalog app)
         - `$ sudo apt-get install sqlite3`  
-    - clone catalog app to /var/www/ [link to app repository and documentation](https://github.com/micond/catalog)
+- clone catalog app to /var/www/ [link to app repository and documentation](https://github.com/micond/catalog)
         - `$ cd /var/www/`      
         - `$ sudo git clone https://github.com/micond/catalog.git`
-    - Create Virtual Environment
+- Create Virtual Environment
         - `$ sudo pip install virtualenv`
         - `$ sudo virtualenv venv`
         - `$ sudo chmod -R 777 venv`
@@ -124,7 +124,7 @@ This tutorial will describe application hosting on AWS lightsail Ubuntu instance
         - Install python modules: `$ pip install -r requirements.txt`
         - run project.py in /var/www/catalog/ and check if app will run on localhost with no missing python modules.
         - `$ deactivate` _deactivate venv_
-    - Configure wsgi / Apache
+- Configure wsgi / Apache
         - create file `catalog.wsgi` in /var/www/ with below content
          ``` 
         #! /usr/bin/python
