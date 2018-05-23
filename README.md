@@ -43,32 +43,32 @@ This tutorial will describe application hosting on AWS lightsail Ubuntu instance
      - Reconnect via Connect using SSH from AWS instance menu.
 - Create new user **`grader`**
      - `$ sudo adduser grader` When prompted enter Full name and Unix password.
-             ``` 
-            ubuntu@ip-172-26-10-33:~$ sudo adduser grader
-            Adding user `grader' ...
-            Adding new group `grader' (1001) ...
-            Adding new user `grader' (1001) with group `grader' ...
-            Creating home directory `/home/grader' ...
-            Copying files from `/etc/skel' ...
-            Enter new UNIX password: 
-            Retype new UNIX password: 
-            passwd: password updated successfully
-            Changing the user information for grader
-            Enter the new value, or press ENTER for the default
-            Full Name []: Udacity Student
-            Room Number []: 
-            Work Phone []: 
-            Home Phone []: 
-            Other []: 
-            Is the information correct? [Y/n] y
-            ubuntu@ip-172-26-10-33:~$ 
-            ```
-     - Use the usermod command to add the user **`grader`** to the sudo group. [How to create a sudo user on ubuntu docs](https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart)
-            - `$ sudo usermod -aG sudo grader`
-        - Enter **`grader`** account: `$ su grader` and confirm with grader password
+     ``` 
+    ubuntu@ip-172-26-10-33:~$ sudo adduser grader
+    Adding user `grader' ...
+    Adding new group `grader' (1001) ...
+    Adding new user `grader' (1001) with group `grader' ...
+    Creating home directory `/home/grader' ...
+    Copying files from `/etc/skel' ...
+    Enter new UNIX password: 
+    Retype new UNIX password: 
+    passwd: password updated successfully
+    Changing the user information for grader
+    Enter the new value, or press ENTER for the default
+    Full Name []: Udacity Student
+    Room Number []: 
+    Work Phone []: 
+    Home Phone []: 
+    Other []: 
+    Is the information correct? [Y/n] y
+    ubuntu@ip-172-26-10-33:~$ 
+    ```
+- Use the usermod command to add the user **`grader`** to the sudo group. [How to create a sudo user on ubuntu docs](https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart)
+    - `$ sudo usermod -aG sudo grader`
+    - Enter **`grader`** account: `$ su grader` and confirm with grader password
 
 - Configure sshd_conf file on your AWS instance:
-        - Add the following entry to sshd_config to disable root to login to the server directly:
+    - Add the following entry to sshd_config to disable root to login to the server directly:
         `$ vi /etc/ssh/sshd_config` 
         Edit line `PermitRootLogin prohibit-password` to `PermitRootLogin no`
         Edit line `PasswordAuthentication no` to: `PasswordAuthentication yes`
@@ -76,16 +76,16 @@ This tutorial will describe application hosting on AWS lightsail Ubuntu instance
         You can try to connect to AWS instance via terminal on you linux PC.
         `$ ssh grader@18.184.238.72` 
 - Configure firewall on your AWS instance. [How to set up a Firewall with UFW on ubunut](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04):
-        - To set the defaults used by UFW:
+    - To set the defaults used by UFW:
         `$ sudo ufw default deny incoming`
         `$ sudo ufw default allow outgoing`
-        - Allowing SSH Connections:
+    - Allowing SSH Connections:
         `$ sudo ufw allow ssh`
         `$ sudo ufw allow 2200`
-        - Allowing Other Connections:
+    - Allowing Other Connections:
         `sudo ufw allow 80` _HTTP on port 80_
         `sudo ufw allow 123` _NTP on port 123_
-        - Enable Firewall:
+    - Enable Firewall:
         `$ sudo ufw enable` _Enabling UFW_
         `$ sudo ufw status verbose` _Check Status_
 - Set Up SSH Keys: [How To Set Up SSH Keys on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604)
